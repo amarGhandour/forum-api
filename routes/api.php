@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('threads', [ThreadController::class, 'index']);
+Route::get('threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+
+Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+
+    Route::post('threads', [ThreadController::class, 'store'])->name('threads.store');
+    Route::patch('threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
+    Route::delete('threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.delete');
+
 });

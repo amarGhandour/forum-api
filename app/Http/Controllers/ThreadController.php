@@ -26,9 +26,9 @@ class ThreadController extends Controller
     public function store(Request $request)
     {
         $attributes = [
-            'title' => $request->input('data.attributes.title'),
-            'slug' => $request->input('data.attributes.slug'),
-            'body' => $request->input('data.attributes.body'),
+            'title' => $request->input('data.title'),
+            'slug' => $request->input('data.slug'),
+            'body' => $request->input('data.body'),
         ];
 
 

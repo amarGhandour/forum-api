@@ -49,14 +49,11 @@ class CreateThreadTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'type' => 'threads',
                 'id' => $threadCreated->id,
-                'attributes' => [
-                    'title' => $threadCreated->title,
-                    'body' => $threadCreated->body,
-                    'slug' => $threadCreated->slug,
-                    'author' => UserResource::make($threadCreated->author)->response()->getData(true),
-                ]
+                'title' => $threadCreated->title,
+                'body' => $threadCreated->body,
+                'slug' => $threadCreated->slug,
+                'author' => UserResource::make($threadCreated->author)->response()->getData(true),
             ]
         ]);
     }

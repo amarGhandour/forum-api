@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Thread;
 
 use App\Models\Thread;
 use App\Models\User;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Thread;
 
 use App\Http\Resources\ThreadResource;
+use App\Http\Resources\UserResource;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -30,7 +30,10 @@ class CreateThreadTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $thread = Thread::factory()->make();
+        $thread = Thread::factory()->make([
+            'user_id' => null
+        ]);
+
         $resourceObject = ThreadResource::make($thread)->response()->getData('true');
 
         $response = $this->postJson('api/v1/threads', $resourceObject)
@@ -42,11 +45,20 @@ class CreateThreadTest extends TestCase
             'slug' => $thread->slug,
         ]);
 
-        $threadCreated = DB::table('threads')->where('slug', $thread->slug)->first();
+        $threadCreated = Thread::where('slug', $thread->slug)->first();
 
-        $response->assertResource(new ThreadResource($threadCreated));
-
-
+        $response->assertJson([
+            'data' => [
+                'type' => 'threads',
+                'id' => $threadCreated->id,
+                'attributes' => [
+                    'title' => $threadCreated->title,
+                    'body' => $threadCreated->body,
+                    'slug' => $threadCreated->slug,
+                    'author' => UserResource::make($threadCreated->author)->response()->getData(true),
+                ]
+            ]
+        ]);
     }
 
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ThreadResource extends JsonResource
+class ReplyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,19 +16,13 @@ class ThreadResource extends JsonResource
     {
         return [
             'data' => [
-                'type' => 'threads',
                 'id' => $this->id,
+                'type' => 'replies',
                 'attributes' => [
-                    'title' => $this->title,
                     'body' => $this->body,
-                    'slug' => $this->slug,
-                    'author' => UserResource::make($this->author),
-                    'replies' => ReplyResource::collection(
-                        $this->whenLoaded('replies')
-                    ),
+                    'owner' => UserResource::make($this->owner),
                 ]
             ]
         ];
     }
-
 }

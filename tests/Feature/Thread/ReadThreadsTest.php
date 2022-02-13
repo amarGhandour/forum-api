@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Thread;
 
 use App\Http\Resources\ThreadCollection;
 use App\Http\Resources\ThreadResource;
+use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -37,6 +38,19 @@ class ReadThreadsTest extends TestCase
 
         $this->getJson(route('threads.show', $thread))
             ->assertOk()->assertResource($resource);
+
+    }
+
+    public function test_user_can_retrieve_replies_that_associated_with_a_thread(): void
+    {
+
+        $reply = Reply::factory()->create();
+
+        $resourceObject = ThreadResource::make($reply->thread);
+
+        $this->getJson(route('threads.show', $reply->thread))
+            ->assertOk()
+            ->assertResource($resourceObject);
 
     }
 

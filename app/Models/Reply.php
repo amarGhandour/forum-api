@@ -5,22 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Thread extends Model
+class Reply extends Model
 {
     use HasFactory;
 
-    protected $with = ['replies'];
-
     protected $guarded = [];
 
-    public function author()
+    public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function replies()
+    public function thread()
     {
-        return $this->hasMany(Reply::class, 'thread_id', 'id');
+        return $this->belongsTo(Thread::class, 'thread_id');
     }
-
 }

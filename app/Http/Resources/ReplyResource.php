@@ -7,6 +7,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ReplyResource extends JsonResource
 {
     /**
+     * @var array
+     */
+    private $withoutFields;
+
+    /**
      * Transform the resource into an array.
      *
      * @param \Illuminate\Http\Request $request
@@ -14,15 +19,31 @@ class ReplyResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        return $this->filterFields([
             'data' => [
                 'id' => $this->id,
-                'type' => 'replies',
-                'attributes' => [
-                    'body' => $this->body,
-                    'owner' => UserResource::make($this->owner),
-                ]
-            ]
-        ];
+                'body' => $this->body,
+                'owner' => UserResource::make($this->owner),
+            ],
+        ]);
+    }
+
+    protected function filterFields(array $fields)
+    {
+        return collect($fields)->except($this->withoutFields)->toArray();
+    }
+
+    public function hide(array $fields)
+    {
+        $this->withoutFields = $fields;
+
+        return $this;
+    }
+
+    public function edit(array $fields)
+    {
+        $this->withoutFields = $fields;
+
+        return $this;
     }
 }

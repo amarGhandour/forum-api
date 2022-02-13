@@ -16,17 +16,14 @@ class ThreadResource extends JsonResource
     {
         return [
             'data' => [
-                'type' => 'threads',
                 'id' => $this->id,
-                'attributes' => [
-                    'title' => $this->title,
-                    'body' => $this->body,
-                    'slug' => $this->slug,
-                    'author' => UserResource::make($this->author),
-                    'replies' => ReplyResource::collection(
-                        $this->whenLoaded('replies')
-                    ),
-                ]
+                'title' => $this->title,
+                'body' => $this->body,
+                'slug' => $this->slug,
+                'author' => UserResource::make($this->author),
+                'replies' => ReplyResource::collection(
+                    $this->whenLoaded('replies')
+                ),
             ]
         ];
     }

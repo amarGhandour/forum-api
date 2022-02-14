@@ -29,7 +29,7 @@ class UpdateThreadTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $this->patchJson(route('threads.update', $thread), $resourceObject)->assertUnauthorized();
+        $this->patchJson(route('threads.update', $thread), $resourceObject)->assertForbidden();
 
         $this->assertDatabaseHas('threads', $resourceObject['data']);
     }

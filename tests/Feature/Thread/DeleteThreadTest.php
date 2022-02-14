@@ -23,7 +23,7 @@ class DeleteThreadTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $this->deleteJson(route('threads.delete', $thread))->assertUnauthorized();
+        $this->deleteJson(route('threads.delete', $thread))->assertForbidden();
 
         $this->assertDatabaseHas('threads', $thread->toArray());
     }

@@ -15,10 +15,8 @@ class RepliesController extends Controller
     public function store(ReplyStoreRequest $request, Thread $thread)
     {
 
-        $reply = $thread->replies()->create([
-            'body' => $request->input('data.body'),
-            'user_id' => auth()->id(),
-        ]);
+        $reply = $thread->replies()->create($request->validated()['data'] +
+            ['user_id' => auth()->id()]);
 
         return response()->json(ReplyResource::make($reply), Response::HTTP_CREATED);
 
@@ -29,11 +27,7 @@ class RepliesController extends Controller
 
         $this->authorize('update', $reply);
 
-        $attributes = [
-            'body' => $request->input('data.body')
-        ];
-
-        $reply->update($attributes);
+        $reply->update($request->validated()['data']);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }

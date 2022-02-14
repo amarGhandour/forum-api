@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Reply;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ReplyPolicy
+class ThreadPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class ReplyPolicy
      * Determine whether the user can view the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Reply $reply
+     * @param \App\Models\Thread $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Reply $reply)
+    public function view(User $user, Thread $thread)
     {
         //
     }
@@ -48,22 +48,22 @@ class ReplyPolicy
      * Determine whether the user can update the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Reply $reply
+     * @param \App\Models\Thread $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Reply $reply)
+    public function update(User $user, Thread $thread)
     {
-        return $user->id === $reply->user_id;
+        return $thread->user_id == $user->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Reply $reply
+     * @param \App\Models\Thread $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Reply $reply)
+    public function delete(User $user, Thread $thread)
     {
         //
     }
@@ -72,10 +72,10 @@ class ReplyPolicy
      * Determine whether the user can restore the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Reply $reply
+     * @param \App\Models\Thread $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Reply $reply)
+    public function restore(User $user, Thread $thread)
     {
         //
     }
@@ -84,10 +84,10 @@ class ReplyPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Reply $reply
+     * @param \App\Models\Thread $thread
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Reply $reply)
+    public function forceDelete(User $user, Thread $thread)
     {
         //
     }

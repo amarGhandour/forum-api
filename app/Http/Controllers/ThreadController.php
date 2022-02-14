@@ -26,13 +26,8 @@ class ThreadController extends Controller
 
     public function store(ThreadStoreRequest $request)
     {
-        $attributes = [
-            'title' => $request->input('data.title'),
-            'slug' => $request->input('data.slug'),
-            'body' => $request->input('data.body'),
-        ];
 
-        $thread = auth()->user()->threads()->create($attributes);
+        $thread = auth()->user()->threads()->create($request->validated()['data']);
 
         return response()->json(new ThreadResource($thread), Response::HTTP_CREATED);
     }
@@ -40,9 +35,7 @@ class ThreadController extends Controller
     public function update(ThreadUpdateRequest $request, Thread $thread)
     {
 
-        if ($thread->author->id !== auth()->user()->id) {
-            return abort(Response::HTTP_UNAUTHORIZED);
-        }
+        $this->authorize('update', $thread);
 
         $thread->update($request->validated()['data']);
 
@@ -52,10 +45,7 @@ class ThreadController extends Controller
 
     public function destroy(Thread $thread)
     {
-
-        if ($thread->author->id !== auth()->user()->id) {
-            return abort(Response::HTTP_UNAUTHORIZED);
-        }
+        $this->authorize('update', $thread);
 
         $thread->delete();
 

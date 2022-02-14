@@ -27,8 +27,7 @@ class RepliesController extends Controller
     public function update(ReplyUpdateRequest $request, Reply $reply)
     {
 
-        if (auth()->user()->id !== $reply->owner->id)
-            return abort(401);
+        $this->authorize('update', $reply);
 
         $attributes = [
             'body' => $request->input('data.body')
@@ -41,9 +40,7 @@ class RepliesController extends Controller
 
     public function destroy(Reply $reply)
     {
-
-        if (auth()->user()->id !== $reply->owner->id)
-            return abort(401);
+        $this->authorize('update', $reply);
 
         $reply->delete();
 

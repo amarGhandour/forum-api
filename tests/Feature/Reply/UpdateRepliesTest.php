@@ -30,7 +30,7 @@ class UpdateRepliesTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->patchJson(route('replies.update', $reply), $resourceObject)
-            ->assertUnauthorized();
+            ->assertForbidden();
 
     }
 

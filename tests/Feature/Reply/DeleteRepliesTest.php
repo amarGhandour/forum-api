@@ -24,7 +24,7 @@ class DeleteRepliesTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $this->deleteJson(route('replies.destroy', $reply))->assertUnauthorized();
+        $this->deleteJson(route('replies.destroy', $reply))->assertForbidden();
 
     }
 

@@ -23,4 +23,13 @@ class Thread extends Model
         return $this->hasMany(Reply::class, 'thread_id', 'id');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($thread) {
+            $thread->replies()->delete();
+        });
+    }
+
 }

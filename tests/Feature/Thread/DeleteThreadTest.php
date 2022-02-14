@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Thread;
 
+use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,12 +35,17 @@ class DeleteThreadTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $threadToBeDeleted = Thread::factory()->create([
+        $thread = Thread::factory()->create([
             'user_id' => $user->id,
         ]);
 
-        $this->deleteJson(route('threads.delete', $threadToBeDeleted))->assertNoContent();
+        $reply = Reply::factory()->create([
+            'thread_id' => $thread->id,
+        ]);
 
-        $this->assertDatabaseMissing('threads', $threadToBeDeleted->toArray());
+        $this->deleteJson(route('threads.delete', $thread))->assertNoContent();
+
+        $this->assertDatabaseMissing('threads', $thread->toArray());
+        $this->assertDatabaseMissing('replies', $reply->toArray());
     }
 }

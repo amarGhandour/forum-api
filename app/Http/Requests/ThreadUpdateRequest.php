@@ -29,6 +29,7 @@ class ThreadUpdateRequest extends FormRequest
             'data.body' => ['required', 'string'],
             'data.slug' => ['required', Rule::unique('threads', 'slug')
                 ->ignore($this->route('thread'))],
+            'data.channel_id' => ['required', Rule::exists('channels', 'id')]
         ];
     }
 }

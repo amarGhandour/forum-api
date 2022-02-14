@@ -19,8 +19,6 @@ class ThreadTest extends TestCase
 
     public function test_it_has_a_replies(): void
     {
-        $this->withoutExceptionHandling();
-
         $thread = Thread::factory()->create();
 
         Reply::factory()->create([
@@ -28,6 +26,14 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $thread->replies);
+    }
+
+    public function test_it_belongs_to_a_channel(): void
+    {
+
+        $thread = Thread::factory()->create();
+
+        $this->assertInstanceOf('\App\Models\Channel', $thread->channel);
     }
 
 }

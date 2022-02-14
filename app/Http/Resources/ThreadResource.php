@@ -19,6 +19,7 @@ class ThreadResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return $this->filterFields([
             'data' => [
                 'id' => $this->id,
@@ -29,7 +30,8 @@ class ThreadResource extends JsonResource
                 'replies' => ReplyResource::collection(
                     $this->whenLoaded('replies')
                 ),
-            ]
+                'channel' => ChannelResource::make($this->channel),
+            ],
         ]);
     }
 

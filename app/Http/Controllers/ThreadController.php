@@ -6,20 +6,25 @@ use App\Http\Requests\ThreadStoreRequest;
 use App\Http\Requests\ThreadUpdateRequest;
 use App\Http\Resources\ThreadCollection;
 use App\Http\Resources\ThreadResource;
+use App\Models\Channel;
 use App\Models\Thread;
 use Illuminate\Http\Response;
 
 class ThreadController extends Controller
 {
-    public function index()
+    public function index(Channel $channel)
     {
 
-        $threads = Thread::all();
+        $threads = Thread::latest();
 
-        return response()->json(new ThreadCollection($threads));
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return response()->json(new ThreadCollection($threads->get()));
     }
 
-    public function show(Thread $thread)
+    public function show(Channel $channel, Thread $thread)
     {
         return response()->json(new ThreadResource($thread));
     }

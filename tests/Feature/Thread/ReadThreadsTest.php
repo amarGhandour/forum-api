@@ -4,6 +4,7 @@ namespace Tests\Feature\Thread;
 
 use App\Http\Resources\ThreadCollection;
 use App\Http\Resources\ThreadResource;
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,13 +18,11 @@ class ReadThreadsTest extends TestCase
     public function test_user_can_retrieve_threads()
     {
 
-        $this->withoutExceptionHandling();
-
         $threads = Thread::factory(2)->create();
 
         $resources = new ThreadCollection($threads);
 
-        $response = $this->getJson("api/threads");
+        $response = $this->getJson(route('threads.index'));
 
         $response->assertOk()
             ->assertResource($resources);
@@ -36,7 +35,7 @@ class ReadThreadsTest extends TestCase
 
         $resource = ThreadResource::make($thread);
 
-        $this->getJson(route('threads.show', $thread))
+        $this->getJson(route('threads.show', [$thread->channel, $thread]))
             ->assertOk()->assertResource($resource);
 
     }
@@ -48,10 +47,26 @@ class ReadThreadsTest extends TestCase
 
         $resourceObject = ThreadResource::make($reply->thread);
 
-        $this->getJson(route('threads.show', $reply->thread))
+        $this->getJson(route('threads.show', [$reply->thread->channel, $reply->thread]))
             ->assertOk()
             ->assertResource($resourceObject);
 
+    }
+
+    public function test_user_can_sort_threads_by_channel()
+    {
+
+        $channel = Channel::factory()->create();
+
+        $threads = Thread::factory(3)->create([
+            'channel_id' => $channel->id
+        ]);
+
+        Thread::factory(3)->create();
+
+        $this->getJson("api/v1/threads/$channel->slug")
+            ->assertOk()
+            ->assertResource(ThreadCollection::make($threads));
     }
 
 

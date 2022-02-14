@@ -20,9 +20,11 @@ class UpdateThreadTest extends TestCase
         $thread = Thread::factory()->create();
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.replies'])
+            ->hide(['data.id', 'data.author', 'data.replies', 'data.channel'])
             ->response()
             ->getData(true);
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)->assertUnauthorized();
 
@@ -45,19 +47,16 @@ class UpdateThreadTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        $this->patchJson(route('threads.update', $thread),
-            [
-                'data' => [
-                    'title' => 'this is title of a thread',
-                    'body' => $thread->body,
-                    'slug' => $thread->slug,
-                ]
-            ])->assertNoContent();
+        $resourceObject = ThreadResource::make(Thread::factory()->make())
+            ->hide(['data.id', 'data.author', 'data.replies', 'data.channel'])
+            ->response()
+            ->getData(true);
 
-        $this->assertDatabaseHas('threads', [
-            'id' => $thread->id,
-            'title' => 'this is title of a thread',
-        ]);
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
+
+        $this->patchJson(route('threads.update', $thread), $resourceObject)->assertNoContent();
+
+        $this->assertDatabaseHas('threads', $resourceObject['data']);
 
     }
 
@@ -72,9 +71,11 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.title'])
+            ->hide(['data.id', 'data.author', 'data.title', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -104,9 +105,11 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['title' => 37483784]))
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -136,9 +139,11 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.body'])
+            ->hide(['data.id', 'data.author', 'data.body', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -168,9 +173,11 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['body' => 37483784]))
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -200,9 +207,11 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.slug'])
+            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -236,9 +245,11 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['slug' => $otherThread->slug]))
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -259,6 +270,8 @@ class UpdateThreadTest extends TestCase
             ->hide(['data.id', 'data.author'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->patchJson(route('threads.update', $thread), $resourceObject)
             ->assertNoContent();

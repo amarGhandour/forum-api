@@ -28,13 +28,13 @@ class CreateThreadTest extends TestCase
         Sanctum::actingAs($user);
 
         $thread = Thread::factory()->make([
-            'user_id' => null
+            'user_id' => $user->id
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author'])
-            ->response()
-            ->getData('true');
+            ->hide(['data.id', 'data.author', 'data.channel'])->response()->getData(true);
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $response = $this->postJson('api/v1/threads', $resourceObject)
             ->assertCreated();
@@ -64,9 +64,11 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.title'])
+            ->hide(['data.id', 'data.author', 'data.title', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->postJson('api/v1/threads', $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -97,9 +99,11 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->postJson('api/v1/threads', $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -129,9 +133,11 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.body'])
+            ->hide(['data.id', 'data.author', 'data.body', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->postJson('api/v1/threads', $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -162,9 +168,11 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->postJson('api/v1/threads', $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -194,9 +202,11 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.slug'])
+            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->postJson('api/v1/threads', $resourceObject)
             ->assertStatus(422)->assertJson([
@@ -229,9 +239,11 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.channel'])
             ->response()
             ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
 
         $this->postJson('api/v1/threads', $resourceObject)
             ->assertStatus(422)->assertJson([

@@ -15,18 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('threads', [ThreadController::class, 'index']);
-Route::get('threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+Route::prefix('v1')->group(function () {
 
-Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+    Route::get('threads', [ThreadController::class, 'index'])->name('threads.index');
+    Route::get('threads/{channel:slug}', [ThreadController::class, 'index']);
+    Route::get('threads/{channel:slug}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 
-    // thread
-    Route::post('threads', [ThreadController::class, 'store'])->name('threads.store');
-    Route::patch('threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
-    Route::delete('threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.delete');
+    Route::middleware('auth:sanctum')->group(function () {
 
-    // reply
-    Route::post('threads/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
-    Route::patch('replies/{reply}', [RepliesController::class, 'update'])->name('replies.update');
-    Route::delete('replies/{reply}', [RepliesController::class, 'destroy'])->name('replies.destroy');
+        // thread
+        Route::post('threads', [ThreadController::class, 'store'])->name('threads.store');
+        Route::patch('threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
+        Route::delete('threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.delete');
+
+        // reply
+        Route::post('threads/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
+        Route::patch('replies/{reply}', [RepliesController::class, 'update'])->name('replies.update');
+        Route::delete('replies/{reply}', [RepliesController::class, 'destroy'])->name('replies.destroy');
+    });
+
 });

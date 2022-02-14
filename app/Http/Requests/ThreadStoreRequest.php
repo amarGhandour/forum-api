@@ -28,6 +28,7 @@ class ThreadStoreRequest extends FormRequest
             'data.title' => ['required', 'string'],
             'data.body' => ['required', 'string'],
             'data.slug' => ['required', Rule::unique('threads', 'slug')],
+            'data.channel_id' => ['required', Rule::exists('channels', 'id')]
         ];
     }
 }

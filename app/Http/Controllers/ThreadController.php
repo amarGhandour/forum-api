@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ThreadStoreRequest;
+use App\Http\Requests\ThreadUpdateRequest;
 use App\Http\Resources\ThreadCollection;
 use App\Http\Resources\ThreadResource;
 use App\Models\Thread;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ThreadController extends Controller
@@ -23,7 +24,7 @@ class ThreadController extends Controller
         return response()->json(new ThreadResource($thread));
     }
 
-    public function store(Request $request)
+    public function store(ThreadStoreRequest $request)
     {
         $attributes = [
             'title' => $request->input('data.title'),
@@ -31,26 +32,19 @@ class ThreadController extends Controller
             'body' => $request->input('data.body'),
         ];
 
-
         $thread = auth()->user()->threads()->create($attributes);
 
         return response()->json(new ThreadResource($thread), Response::HTTP_CREATED);
     }
 
-    public function update(Request $request, Thread $thread)
+    public function update(ThreadUpdateRequest $request, Thread $thread)
     {
 
         if ($thread->author->id !== auth()->user()->id) {
             return abort(Response::HTTP_UNAUTHORIZED);
         }
 
-        $attributes = [
-            'title' => $request->input('data.attributes.title'),
-            'slug' => $request->input('data.attributes.slug'),
-            'body' => $request->input('data.attributes.body'),
-        ];
-
-        $thread->update($attributes);
+        $thread->update($request->validated()['data']);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
 

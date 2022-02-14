@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Thread;
 
+use App\Http\Resources\ThreadResource;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,14 +19,19 @@ class UpdateThreadTest extends TestCase
 
         $thread = Thread::factory()->create();
 
-        $this->patchJson(route('threads.update', $thread), [])->assertUnauthorized();
+        $resourceObject = ThreadResource::make($thread)
+            ->hide(['data.id', 'data.author', 'data.replies'])
+            ->response()
+            ->getData(true);
+
+        $this->patchJson(route('threads.update', $thread), $resourceObject)->assertUnauthorized();
 
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $this->patchJson(route('threads.update', $thread), [])->assertUnauthorized();
+        $this->patchJson(route('threads.update', $thread), $resourceObject)->assertUnauthorized();
 
-        $this->assertDatabaseHas('threads', $thread->toArray());
+        $this->assertDatabaseHas('threads', $resourceObject['data']);
     }
 
 
@@ -42,13 +48,9 @@ class UpdateThreadTest extends TestCase
         $this->patchJson(route('threads.update', $thread),
             [
                 'data' => [
-                    'id' => $thread->id,
-                    'type' => 'threads',
-                    'attributes' => [
-                        'title' => 'this is title of a thread',
-                        'body' => $thread->body,
-                        'slug' => $thread->slug,
-                    ]
+                    'title' => 'this is title of a thread',
+                    'body' => $thread->body,
+                    'slug' => $thread->slug,
                 ]
             ])->assertNoContent();
 

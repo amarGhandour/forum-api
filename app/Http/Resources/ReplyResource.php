@@ -40,10 +40,4 @@ class ReplyResource extends JsonResource
         return $this;
     }
 
-    public function edit(array $fields)
-    {
-        $this->withoutFields = $fields;
-
-        return $this;
-    }
 }

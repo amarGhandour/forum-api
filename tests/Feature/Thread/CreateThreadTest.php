@@ -3,7 +3,6 @@
 namespace Tests\Feature\Thread;
 
 use App\Http\Resources\ThreadResource;
-use App\Http\Resources\UserResource;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,8 +24,6 @@ class CreateThreadTest extends TestCase
     public function test_an_authenticated_user_may_create_a_thread_from_a_resource_object(): void
     {
 
-        $this->withoutExceptionHandling();
-
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
@@ -34,7 +31,10 @@ class CreateThreadTest extends TestCase
             'user_id' => null
         ]);
 
-        $resourceObject = ThreadResource::make($thread)->response()->getData('true');
+        $resourceObject = ThreadResource::make($thread)
+            ->hide(['data.id', 'data.author'])
+            ->response()
+            ->getData('true');
 
         $response = $this->postJson('api/v1/threads', $resourceObject)
             ->assertCreated();
@@ -47,15 +47,10 @@ class CreateThreadTest extends TestCase
 
         $threadCreated = Thread::where('slug', $thread->slug)->first();
 
-        $response->assertJson([
-            'data' => [
-                'id' => $threadCreated->id,
-                'title' => $threadCreated->title,
-                'body' => $threadCreated->body,
-                'slug' => $threadCreated->slug,
-                'author' => UserResource::make($threadCreated->author)->response()->getData(true),
-            ]
-        ]);
+        $resourceObject = ThreadResource::make($threadCreated);
+
+        $response->assertResource($resourceObject->hide(['data.replies']));
+
     }
 
 }

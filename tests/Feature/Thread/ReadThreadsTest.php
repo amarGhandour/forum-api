@@ -7,6 +7,7 @@ use App\Http\Resources\ThreadResource;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -67,6 +68,25 @@ class ReadThreadsTest extends TestCase
         $this->getJson("api/v1/threads/$channel->slug")
             ->assertOk()
             ->assertResource(ThreadCollection::make($threads));
+    }
+
+    public function test_user_can_sort_threads_by_author()
+    {
+
+        $user = User::factory()->create();
+
+        Thread::factory(3)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $threads = Thread::where('user_id', $user->id)->get();
+
+        Thread::factory(3)->create();
+
+        $this->getJson("api/v1/threads?by=$user->name")
+            ->assertOk()
+            ->assertExactResource(new ThreadCollection($threads));
+
     }
 
 

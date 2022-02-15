@@ -20,6 +20,10 @@ trait CreatesApplication
             $this->assertJson($resource->response()->getData(true));
         });
 
+        TestResponse::macro('assertExactResource', function ($resource) {
+            $this->assertExactJson($resource->response()->getData(true));
+        });
+
         $app->make(Kernel::class)->bootstrap();
 
         return $app;

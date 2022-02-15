@@ -34,6 +34,12 @@ class ReadThreadsTest extends TestCase
 
         $thread = Thread::factory()->create();
 
+        Reply::factory()->create([
+            'thread_id' => $thread->id,
+        ]);
+
+        $thread = Thread::where('id', $thread->id)->first();
+
         $resource = ThreadResource::make($thread);
 
         $this->getJson(route('threads.show', [$thread->channel, $thread]))
@@ -84,6 +90,23 @@ class ReadThreadsTest extends TestCase
         Thread::factory(3)->create();
 
         $this->getJson("api/v1/threads?by=$user->name")
+            ->assertOk()
+            ->assertExactResource(new ThreadCollection($threads));
+
+    }
+
+    public function test_user_can_sort_threads_by_popularity()
+    {
+
+        collect(Thread::factory(3)->create())->map(function ($thread) use (&$count) {
+            Reply::factory()->count($count--)->create([
+                'thread_id' => $thread->id,
+            ]);
+        });
+
+        $threads = Thread::orderBy('replies_count', 'DESC')->get();
+
+        $this->getJson("api/v1/threads?popular=1")
             ->assertOk()
             ->assertExactResource(new ThreadCollection($threads));
 

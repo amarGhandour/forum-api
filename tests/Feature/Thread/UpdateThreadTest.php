@@ -20,7 +20,7 @@ class UpdateThreadTest extends TestCase
         $thread = Thread::factory()->create();
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.replies', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.replies', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData(true);
 
@@ -48,7 +48,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.replies', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.replies', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData(true);
 
@@ -71,7 +71,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.title', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.title', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -105,7 +105,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['title' => 37483784]))
-            ->hide(['data.id', 'data.author', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -139,7 +139,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.body', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.body', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -173,7 +173,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['body' => 37483784]))
-            ->hide(['data.id', 'data.author', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -207,7 +207,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -245,7 +245,7 @@ class UpdateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['slug' => $otherThread->slug]))
-            ->hide(['data.id', 'data.author', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -267,7 +267,7 @@ class UpdateThreadTest extends TestCase
         $this->assertDatabaseMissing('threads', $resourceObject['data']);
 
         $resourceObject = ThreadResource::make(Thread::factory()->make(['slug' => $thread->slug]))
-            ->hide(['data.id', 'data.author'])
+            ->hide(['data.id', 'data.author', 'data.replies_count'])
             ->response()
             ->getData('true');
 

@@ -64,7 +64,7 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.title', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.title', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -99,7 +99,7 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -133,7 +133,7 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.body', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.body', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -168,7 +168,7 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -202,7 +202,7 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel', 'data.replies_count'])
             ->response()
             ->getData('true');
 
@@ -239,7 +239,7 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.channel'])
+            ->hide(['data.id', 'data.author', 'data.channel', 'replies_count'])
             ->response()
             ->getData('true');
 

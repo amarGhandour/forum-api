@@ -30,6 +30,7 @@ class ThreadResource extends JsonResource
                 'replies' => ReplyResource::collection(
                     $this->whenLoaded('replies')
                 ),
+                'replies_count' => $this->replies_count,
                 'channel' => ChannelResource::make($this->channel),
             ],
         ]);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LikesController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,9 @@ Route::prefix('v1')->group(function () {
         Route::post('threads/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
         Route::patch('replies/{reply}', [RepliesController::class, 'update'])->name('replies.update');
         Route::delete('replies/{reply}', [RepliesController::class, 'destroy'])->name('replies.destroy');
+
+        // likes
+        Route::post('replies/{reply}/likes', [LikesController::class, 'store'])->name('replies.likes');
     });
 
 });

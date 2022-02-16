@@ -24,6 +24,7 @@ class ReplyResource extends JsonResource
                 'id' => $this->id,
                 'body' => $this->body,
                 'owner' => UserResource::make($this->owner),
+                'likes_count' => $this->likes_count,
             ],
         ]);
     }

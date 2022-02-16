@@ -4,10 +4,12 @@ namespace Tests\Unit;
 
 use App\Models\Reply;
 use App\Models\Thread;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function test_it_has_an_author(): void
     {

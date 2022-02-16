@@ -21,4 +21,24 @@ class Reply extends Model
         return $this->belongsTo(Thread::class, 'thread_id');
     }
 
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function like()
+    {
+
+        $attributes = ['user_id' => auth()->id()];
+
+        if (!$this->isLiked()) {
+            $this->likes()->create($attributes);
+        }
+    }
+
+    public function isLiked()
+    {
+        return $this->likes()->where('user_id', auth()->id())->exists();
+    }
+
 }

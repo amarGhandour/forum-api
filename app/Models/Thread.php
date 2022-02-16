@@ -26,7 +26,7 @@ class Thread extends Model
 
     public function replies()
     {
-        return $this->hasMany(Reply::class, 'thread_id', 'id');
+        return $this->hasMany(Reply::class, 'thread_id', 'id')->withCount('likes');
     }
 
     public function scopeFilter($query, ThreadFilter $filters)

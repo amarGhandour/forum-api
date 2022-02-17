@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Like;
+use App\Models\Reply;
+use App\Models\Thread;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,10 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
 
-        $this->call([
-            ThreadSeeder::class,
-        ]);
+        Thread::factory(30)->create()->each(function ($thread) {
+            Reply::factory(5)->create([
+                'thread_id' => $thread->id,
+            ])->each(function ($reply) {
+                Like::factory(5)->create([
+                    'likeable_id' => $reply->id,
+                ]);
+            });
+        });
+
     }
 }

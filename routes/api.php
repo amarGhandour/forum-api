@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,9 @@ Route::prefix('v1')->group(function () {
 
         // likes
         Route::post('replies/{reply}/likes', [LikesController::class, 'store'])->name('replies.likes');
+
+        // profile
+        Route::get('profiles/{user:name}', [ProfileController::class, 'show'])->name('profile');
     });
 
 });

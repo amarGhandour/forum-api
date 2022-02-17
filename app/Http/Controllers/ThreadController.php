@@ -29,7 +29,7 @@ class ThreadController extends Controller
     public function store(ThreadStoreRequest $request)
     {
 
-        $thread = auth()->user()->threads()->create($request->validated()['data']);
+        $thread = auth()->user()->threads()->create($request->validated()['data'])->load('channel');
 
         return response()->json(new ThreadResource($thread), Response::HTTP_CREATED);
     }

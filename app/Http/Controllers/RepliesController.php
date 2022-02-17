@@ -16,7 +16,7 @@ class RepliesController extends Controller
     {
 
         $reply = $thread->replies()->create($request->validated()['data'] +
-            ['user_id' => auth()->id()]);
+            ['user_id' => auth()->id()])->load('owner');
 
         return response()->json(ReplyResource::make($reply), Response::HTTP_CREATED);
 
@@ -34,6 +34,7 @@ class RepliesController extends Controller
 
     public function destroy(Reply $reply)
     {
+
         $this->authorize('update', $reply);
 
         $reply->delete();

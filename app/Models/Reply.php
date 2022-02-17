@@ -9,6 +9,8 @@ class Reply extends Model
 {
     use HasFactory;
 
+    protected $with = ['owner', 'likes'];
+
     protected $guarded = [];
 
     public function owner()
@@ -31,14 +33,14 @@ class Reply extends Model
 
         $attributes = ['user_id' => auth()->id()];
 
-        if (!$this->isLiked()) {
+        if (!$this->likes()->where('user_id', auth()->id())->exists()) {
             $this->likes()->create($attributes);
         }
     }
 
     public function isLiked()
     {
-        return $this->likes()->where('user_id', auth()->id())->exists();
+        return !!$this->likes->where('user_id', auth()->id())->count();
     }
 
 }

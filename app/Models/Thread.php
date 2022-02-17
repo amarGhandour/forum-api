@@ -10,7 +10,7 @@ class Thread extends Model
 {
     use HasFactory;
 
-    protected $with = ['replies'];
+    protected $with = ['replies', 'channel', 'author'];
 
     protected $guarded = [];
 

@@ -12,6 +12,7 @@ class LikesController extends Controller
     {
 
         $reply->like();
+
         return response()->json(null, Response::HTTP_CREATED);
     }
 }

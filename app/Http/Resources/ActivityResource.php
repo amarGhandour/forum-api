@@ -14,12 +14,18 @@ class ActivityResource extends JsonResource
      */
     public function toArray($request)
     {
-        $subject = (new \ReflectionClass($this->subject_type))->getShortName();
-        $type = '\App\Http\Resources\\' . $subject . 'Resource';
+        $type = $this->getTypeResource();
 
         return [
             'type' => $this->type,
             'subject_type' => new $type($this->whenLoaded('subject')),
         ];
+    }
+
+    private function getTypeResource(): string
+    {
+        $subject = (new \ReflectionClass($this->subject_type))->getShortName();
+        $type = '\App\Http\Resources\\' . $subject . 'Resource';
+        return $type;
     }
 }

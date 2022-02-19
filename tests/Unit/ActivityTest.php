@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {
-    use RefreshDatabase;
+   use RefreshDatabase;
 
     public function test_it_belongs_to_a_subject()
     {

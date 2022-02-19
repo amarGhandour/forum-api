@@ -2,14 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\ResourceHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReplyResource extends JsonResource
 {
-    /**
-     * @var array
-     */
-    private $withoutFields;
+    use ResourceHelper;
 
     /**
      * Transform the resource into an array.
@@ -27,18 +25,6 @@ class ReplyResource extends JsonResource
                 'likes_count' => $this->likes_count,
             ],
         ]);
-    }
-
-    protected function filterFields(array $fields)
-    {
-        return collect($fields)->except($this->withoutFields)->toArray();
-    }
-
-    public function hide(array $fields)
-    {
-        $this->withoutFields = $fields;
-
-        return $this;
     }
 
 }

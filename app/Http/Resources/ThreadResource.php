@@ -2,14 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\ResourceHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ThreadResource extends JsonResource
 {
-    /**
-     * @var array
-     */
-    private $withoutFields;
+    use ResourceHelper;
 
     /**
      * Transform the resource into an array.
@@ -34,32 +32,6 @@ class ThreadResource extends JsonResource
                 'channel' => ChannelResource::make($this->whenLoaded('channel')),
             ],
         ]);
-    }
-
-    public function hide(array $fields)
-    {
-        $this->withoutFields = $fields;
-        return $this;
-    }
-
-    private function filterFields(array $data)
-    {
-        $result = collect($data)->except($this->withoutFields)->toArray();
-        return $this->removeNullValues($result['data']);
-    }
-
-    public function removeNullValues(array $data)
-    {
-        $filtered_data = [];
-        foreach ($data as $key => $value) {
-            // if resource is empty
-            if ($value instanceof JsonResource and $value->resource === null) {
-                continue;
-            }
-            $filtered_data['data'][$key] = $this->when($value !== null, $value);
-        }
-
-        return $filtered_data;
     }
 
 }

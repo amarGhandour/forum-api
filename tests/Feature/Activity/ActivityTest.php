@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+   use RefreshDatabase, WithFaker;
 
     public function test_it_records_activity_when_a_thread_is_created()
     {

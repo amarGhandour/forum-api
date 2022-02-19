@@ -21,11 +21,6 @@ trait RecordsActivity
 
     }
 
-    protected static function getActivitiesEvent()
-    {
-        return ['created'];
-    }
-
     protected function recordActivity($event)
     {
         $this->activity()->create([
@@ -43,5 +38,10 @@ trait RecordsActivity
     {
         $type = lcfirst((new \ReflectionClass($this))->getShortName());
         return "{$event}_$type";
+    }
+
+    protected static function getActivitiesEvent()
+    {
+        return ['created'];
     }
 }

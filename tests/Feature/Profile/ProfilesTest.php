@@ -24,7 +24,7 @@ class ProfilesTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        Thread::factory()->create();
+         Thread::factory()->create();
 
         $this->getJson(route('profile', $user))
             ->assertOk()->assertResource(ProfileResource::make($user));

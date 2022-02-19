@@ -3,6 +3,7 @@
 namespace Tests\Feature\Profile;
 
 use App\Http\Resources\ProfileResource;
+use App\Models\Like;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,14 +21,16 @@ class ProfilesTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        Thread::factory(2)->create([
+        Thread::factory()->create([
             'user_id' => $user->id,
         ]);
 
-         Thread::factory()->create();
+        Like::factory()->create([
+            'user_id' => $user->id
+        ]);
 
         $this->getJson(route('profile', $user))
-            ->assertOk()->assertResource(ProfileResource::make($user));
+            ->assertOk()->assertSee(['created_like', 'created_thread'])->assertResource(ProfileResource::make($user));
 
     }
 }

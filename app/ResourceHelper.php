@@ -37,4 +37,11 @@ trait ResourceHelper
 
         return $filtered_data;
     }
+
+    protected function getTypeResource($type): string
+    {
+        $subject = (new \ReflectionClass($type))->getShortName();
+
+        return '\App\Http\Resources\\' . $subject . 'Resource';
+    }
 }

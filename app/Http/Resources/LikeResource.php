@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\ResourceHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ActivityResource extends JsonResource
+class LikeResource extends JsonResource
 {
     use ResourceHelper;
 
@@ -17,12 +17,9 @@ class ActivityResource extends JsonResource
      */
     public function toArray($request)
     {
-        $typeResource = $this->getTypeResource($this->subject_type);
-
+        $typeResource = $this->getTypeResource($this->likeable_type);
         return [
-            'type' => $this->type,
-            'subject_type' => new $typeResource($this->whenLoaded('subject')),
+            'liked' => new $typeResource($this->likeable),
         ];
     }
-
 }

@@ -38,4 +38,11 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf('\App\Models\Channel', $thread->channel);
     }
 
+    public function test_it_has_feeds()
+    {
+        $thread = Thread::factory()->create();
+        $this->assertCount(1, $thread->activity);
+
+    }
+
 }

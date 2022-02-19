@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Thread;
 
+use App\Models\Activity;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
@@ -47,5 +48,6 @@ class DeleteThreadTest extends TestCase
 
         $this->assertDatabaseMissing('threads', $thread->toArray());
         $this->assertDatabaseMissing('replies', $reply->toArray());
+        $this->assertCount(0, Activity::all());
     }
 }

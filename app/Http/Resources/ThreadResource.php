@@ -26,7 +26,7 @@ class ThreadResource extends JsonResource
                 'title' => $this->title,
                 'body' => $this->body,
                 'slug' => $this->slug,
-                'author' => UserResource::make($this->author),
+                'author' => UserResource::make($this->whenLoaded('author')),
                 'replies' => ReplyResource::collection(
                     $this->whenLoaded('replies')
                 ),
@@ -44,7 +44,22 @@ class ThreadResource extends JsonResource
 
     private function filterFields(array $data)
     {
-        return collect($data)->except($this->withoutFields)->toArray();
+        $result = collect($data)->except($this->withoutFields)->toArray();
+        return $this->removeNullValues($result['data']);
+    }
+
+    public function removeNullValues(array $data)
+    {
+        $filtered_data = [];
+        foreach ($data as $key => $value) {
+            // if resource is empty
+            if ($value instanceof JsonResource and $value->resource === null) {
+                continue;
+            }
+            $filtered_data['data'][$key] = $this->when($value !== null, $value);
+        }
+
+        return $filtered_data;
     }
 
 }

@@ -20,13 +20,11 @@ class ProfilesTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        Thread::factory()->create([
+        Thread::factory(2)->create([
             'user_id' => $user->id,
         ]);
 
         Thread::factory()->create();
-
-        $user->load('threads');
 
         $this->getJson(route('profile', $user))
             ->assertOk()->assertResource(ProfileResource::make($user));

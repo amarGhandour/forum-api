@@ -10,9 +10,7 @@ class ProfileController extends Controller
 {
     public function show(User $user)
     {
-
-        $user->load('threads');
-
+        $user->load('activity');
         return response()->json(ProfileResource::make($user), Response::HTTP_OK);
     }
 }

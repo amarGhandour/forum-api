@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Activity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileResource extends JsonResource
@@ -18,7 +19,9 @@ class ProfileResource extends JsonResource
             'data' => [
                 'name' => $this->name,
                 'email' => $this->email,
-                'threads_created' => ThreadCollection::make($this->whenLoaded('threads')),
+                'activities' => ActivityCollection::make(Activity::feed($this->resource))->groupBy(function ($activity) {
+                    return $activity->created_at->format('Y-m-d');
+                }),
             ]
         ];
     }

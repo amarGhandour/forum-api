@@ -50,7 +50,7 @@ class CreateThreadTest extends TestCase
 
         $resourceObject = ThreadResource::make($threadCreated);
 
-        $response->assertResource($resourceObject->hide(['data.replies']));
+        $response->assertResource($resourceObject->hide(['data.replies', 'data.replies_count']));
 
     }
 

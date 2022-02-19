@@ -24,4 +24,18 @@ class UserTest extends TestCase
 
         $this->assertCount(1, $user->threads);
     }
+
+    public function test_it_has_activity()
+    {
+
+        $user = User::factory()->create();
+
+        Thread::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->assertCount(1, $user->activity);
+
+    }
+
 }

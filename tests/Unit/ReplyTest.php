@@ -63,4 +63,23 @@ class ReplyTest extends TestCase
         $this->assertFalse($reply->isLiked());
 
     }
+
+    public function test_it_unlike_a_reply()
+    {
+        $reply = Reply::factory()->create();
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        Like::factory()->create([
+            'user_id' => $user->id,
+            'likeable_id' => $reply->id,
+            'likeable_type' => get_class($reply),
+        ]);
+
+        $reply->unlike();
+
+        $this->assertCount(0, $reply->likes);
+
+    }
 }

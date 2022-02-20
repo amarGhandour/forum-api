@@ -34,14 +34,32 @@ class Reply extends Model
 
         $attributes = ['user_id' => auth()->id()];
 
-        if (!$this->likes()->where('user_id', auth()->id())->exists()) {
+        if (!$this->likes()->where($attributes)->exists()) {
             $this->likes()->create($attributes);
+        }
+    }
+
+    public function unlike()
+    {
+        $attributes = ['user_id' => auth()->id()];
+
+        if ($this->likes()->where($attributes)->exists()) {
+            $this->likes()->where($attributes)->get()->each->delete();
         }
     }
 
     public function isLiked()
     {
         return !!$this->likes->where('user_id', auth()->id())->count();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($reply) {
+            $reply->likes->each->delete();
+        });
     }
 
 }

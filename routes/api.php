@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function () {
 
         // likes
         Route::post('replies/{reply}/likes', [LikesController::class, 'store'])->name('replies.likes');
+        Route::delete('replies/{reply}/likes', [LikesController::class, 'destroy'])->name('replies.likes.destroy');
 
         // profile
         Route::get('profiles/{user:name}', [ProfileController::class, 'show'])->name('profile');

@@ -52,4 +52,21 @@ class LikesTest extends TestCase
 
         $this->assertCount(1, $likeable->likes);
     }
+
+    public function test_an_authenticated_user_can_unlike_a_reply()
+    {
+
+        $this->withoutExceptionHandling();
+
+        $reply = Reply::factory()->create();
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $reply->like();
+
+        $this->deleteJson(route('replies.likes.destroy', $reply))->assertNoContent();
+
+        $this->assertCount(0, $reply->likes);
+    }
 }

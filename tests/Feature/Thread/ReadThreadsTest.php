@@ -47,17 +47,14 @@ class ReadThreadsTest extends TestCase
 
     }
 
-    public function test_user_can_retrieve_replies_that_associated_with_a_thread(): void
+    public function test_user_can_fetches_replies()
     {
 
         $reply = Reply::factory()->create();
 
-        $resourceObject = ThreadResource::make($reply->thread);
-
-        $this->getJson(route('threads.show', [$reply->thread->channel, $reply->thread]))
+        $this->getJson(route('replies.index', [$reply->thread->channel, $reply->thread]))
             ->assertOk()
-            ->assertResource($resourceObject);
-
+            ->assertJsonCount(1, 'data');
     }
 
     public function test_user_can_sort_threads_by_channel()

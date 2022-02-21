@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReplyStoreRequest;
 use App\Http\Requests\ReplyUpdateRequest;
+use App\Http\Resources\ReplyCollection;
 use App\Http\Resources\ReplyResource;
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Http\Response;
 
 class RepliesController extends Controller
 {
+
+    public function index(Channel $channel, Thread $thread)
+    {
+        return response()->json(new ReplyCollection($thread->replies), Response::HTTP_OK);
+    }
 
     public function store(ReplyStoreRequest $request, Thread $thread)
     {

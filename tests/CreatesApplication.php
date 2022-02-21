@@ -17,11 +17,11 @@ trait CreatesApplication
         $app = require __DIR__ . '/../bootstrap/app.php';
 
         TestResponse::macro('assertResource', function ($resource) {
-            $this->assertJson($resource->response()->getData(true));
+            return $this->assertJson($resource->response()->getData(true));
         });
 
         TestResponse::macro('assertExactResource', function ($resource) {
-            $this->assertExactJson($resource->response()->getData(true));
+            return $this->assertExactJson($resource->response()->getData(true));
         });
 
         $app->make(Kernel::class)->bootstrap();

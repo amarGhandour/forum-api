@@ -23,6 +23,9 @@ Route::prefix('v1')->group(function () {
     Route::get('threads/{channel:slug}', [ThreadController::class, 'index']);
     Route::get('threads/{channel:slug}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 
+    // reply
+    Route::get('threads/{channel:slug}/{thread}/replies', [RepliesController::class, 'index'])->name('replies.index');
+
     Route::middleware('auth:sanctum')->group(function () {
 
         // thread

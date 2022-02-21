@@ -11,7 +11,7 @@ class Thread extends Model
 {
     use HasFactory, RecordsActivity;
 
-    protected $with = ['replies', 'channel', 'author'];
+    protected $with = ['channel', 'author'];
 
     protected $guarded = [];
 

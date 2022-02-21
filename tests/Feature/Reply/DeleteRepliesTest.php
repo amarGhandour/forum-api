@@ -40,6 +40,9 @@ class DeleteRepliesTest extends TestCase
         ]);
 
         $this->deleteJson(route('replies.destroy', $reply))->assertNoContent();
+
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
+
     }
 
 }

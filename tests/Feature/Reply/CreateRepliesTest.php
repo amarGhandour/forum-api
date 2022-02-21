@@ -47,6 +47,7 @@ class CreateRepliesTest extends TestCase
 
         $response->assertResource(ReplyResource::make($replyCreated));
 
+
     }
 
     public function test_it_validated_that_the_body_field_is_given_when_creating_a_reply()

@@ -60,6 +60,14 @@ class Reply extends Model
         static::deleting(function ($reply) {
             $reply->likes->each->delete();
         });
+
+        static::created(function ($reply) {
+            $reply->thread()->increment('replies_count');
+        });
+
+        static::deleted(function ($reply) {
+            $reply->thread()->decrement('replies_count');
+        });
     }
 
 }

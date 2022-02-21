@@ -112,5 +112,19 @@ class ReadThreadsTest extends TestCase
 
     }
 
+    public function test_user_can_filter_thread_by_unanswered()
+    {
+
+        Reply::factory()->create();
+
+        Thread::factory()->create();
+
+        $response = $this->getJson('api/v1/threads?unanswered=1')
+            ->assertOk();
+
+        $this->assertCount(1, $response->json('data'));
+
+    }
+
 
 }

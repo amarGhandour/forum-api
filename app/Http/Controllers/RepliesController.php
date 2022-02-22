@@ -22,7 +22,7 @@ class RepliesController extends Controller
     public function store(ReplyStoreRequest $request, Thread $thread)
     {
 
-        $reply = $thread->replies()->create($request->validated()['data'] +
+        $reply = $thread->addReply($request->validated()['data'] +
             ['user_id' => auth()->id()])->load('owner');
 
         return response()->json(ReplyResource::make($reply), Response::HTTP_CREATED);

@@ -24,8 +24,34 @@ class Thread extends Model
                 $reply->delete();
             });
         });
+    }
 
+    public function addReply(array $attributes)
+    {
+        $reply = $this->replies()->create($attributes);
 
+        $this->subscriptions->filter(function ($subscription) use ($reply) {
+            return $subscription->user_id !== $reply->user_id;
+        })->each->notify($reply);
+
+        return $reply;
+    }
+
+    public function subscribe()
+    {
+        if ((auth()->user() ?? false) && !$this->subscriptions()->where(['user_id' => auth()->id()])->exists())
+            return $this->subscriptions()->create(['user_id' => auth()->id()]);
+    }
+
+    public function unsubscribe()
+    {
+        if (auth()->user() ?? false)
+            $this->subscriptions()->where(['user_id' => auth()->id()])->delete();
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class, 'thread_id');
     }
 
     public function author()

@@ -14,6 +14,11 @@ class Reply extends Model
 
     protected $guarded = [];
 
+    public function path()
+    {
+        return route('threads.show', [$this->thread->channel, $this->thread]) . "#reply-$this->id";
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');

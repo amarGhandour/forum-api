@@ -4,6 +4,9 @@ use App\Http\Controllers\LikesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\ThreadNotificationsController;
+use App\Http\Controllers\ThreadSubscriptionController;
+use App\Http\Controllers\UserNotificationsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +36,12 @@ Route::prefix('v1')->group(function () {
         Route::patch('threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
         Route::delete('threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.delete');
 
+        // thread subscriptions
+        Route::post('threads/{channel:slug}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'store'])
+            ->name('threads.subscriptions.store');
+        Route::delete('threads/{channel:slug}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'destroy'])
+            ->name('threads.subscriptions.destroy');
+
         // reply
         Route::post('threads/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
         Route::patch('replies/{reply}', [RepliesController::class, 'update'])->name('replies.update');
@@ -44,6 +53,12 @@ Route::prefix('v1')->group(function () {
 
         // profile
         Route::get('profiles/{user:name}', [ProfileController::class, 'show'])->name('profile');
+
+        // notifications
+        Route::delete('profiles/{user:name}/notifications/{notification}', [UserNotificationsController::class, 'destroy'])
+            ->name('thread-notifications.destroy');
+        Route::get('profiles/{user:name}/notifications', [UserNotificationsController::class, 'index'])
+            ->name('thread-notifications.index');
     });
 
 });

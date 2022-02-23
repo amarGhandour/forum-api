@@ -5,9 +5,11 @@ namespace Tests\Unit;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\ThreadSubscription;
+use App\Models\User;
 use App\Notifications\ThreadWasUpdated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
@@ -70,6 +72,22 @@ class ThreadTest extends TestCase
         $subscription->thread->addReply(Reply::factory()->make()->toArray());
 
         Notification::assertSentTo($subscription->subscriber, ThreadWasUpdated::class);
+
+    }
+
+
+    public function test_a_thread_checks_if_authenticated_user_has_read_all_replies()
+    {
+
+        Sanctum::actingAs($user = User::factory()->create());
+
+        $thread = Thread::factory()->create();
+
+        $this->assertTrue($thread->hasUpdatesFor($user));
+
+        $user->read($thread);
+
+        $this->assertFalse($thread->hasUpdatesFor($user));
 
     }
 

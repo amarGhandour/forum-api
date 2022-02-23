@@ -10,6 +10,7 @@ use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
@@ -32,6 +33,8 @@ class ReadThreadsTest extends TestCase
     public function test_user_can_retrieve_specific_thread()
     {
 
+        Sanctum::actingAs($user = User::factory()->create());
+
         $thread = Thread::factory()->create();
 
         Reply::factory()->create([
@@ -42,8 +45,13 @@ class ReadThreadsTest extends TestCase
 
         $resource = ThreadResource::make($thread);
 
+        $this->assertTrue($thread->hasUpdatesFor($user));
+
         $this->getJson(route('threads.show', [$thread->channel, $thread]))
             ->assertOk()->assertResource($resource);
+
+        $this->assertFalse($thread->hasUpdatesFor($user));
+
 
     }
 

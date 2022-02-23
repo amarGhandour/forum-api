@@ -23,6 +23,11 @@ class ThreadController extends Controller
 
     public function show(Channel $channel, Thread $thread)
     {
+
+        if (auth()->check()) {
+            auth()->user()->read($thread);
+        }
+
         return response()->json(new ThreadResource($thread));
     }
 

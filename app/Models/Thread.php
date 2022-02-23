@@ -77,4 +77,12 @@ class Thread extends Model
         $this->subscriptions->where('user_id', '!=', $reply->user_id)->each->notify($reply);
     }
 
+    public function hasUpdatesFor(User $user)
+    {
+
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
+    }
+
 }

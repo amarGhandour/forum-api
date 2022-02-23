@@ -4,7 +4,10 @@ namespace Tests\Unit;
 
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\ThreadSubscription;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
@@ -55,6 +58,19 @@ class ThreadTest extends TestCase
         $thread->addReply(Reply::factory()->make()->toArray());
 
         $this->assertCount(1, $thread->fresh()->replies);
+    }
+
+    public function test_a_thread_notifies_all_registered_subscribers_when_a_reply_is_added()
+    {
+
+        Notification::fake();
+
+        $subscription = ThreadSubscription::factory()->create();
+
+        $subscription->thread->addReply(Reply::factory()->make()->toArray());
+
+        Notification::assertSentTo($subscription->subscriber, ThreadWasUpdated::class);
+
     }
 
 

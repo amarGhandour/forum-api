@@ -56,6 +56,40 @@ class UpdateRepliesTest extends TestCase
             ->assertNoContent();
     }
 
+    public function test_replies_that_contain_spam_not_be_updated(): void
+    {
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $reply = Reply::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $resourceObject = ReplyResource::make($reply)
+            ->response()
+            ->getData(true);
+        $resourceObject['data']['body'] = 'yahoo customer service';
+
+        $this->patchJson(route('replies.update', $reply), $resourceObject)
+            ->assertStatus(422)->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+                        'details' => 'The data.body field contains spam.',
+                        'source' => [
+                            'pointer' => '/data/body',
+                        ]
+                    ]
+                ]
+            ]);;
+
+        $this->assertDatabaseMissing('replies', [
+            'id' => null,
+            'body' => $reply->body,
+        ]);
+
+    }
 
     public function test_it_validated_that_the_identifier_field_is_given_when_updating_a_reply()
     {

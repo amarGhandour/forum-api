@@ -54,6 +54,72 @@ class CreateThreadTest extends TestCase
 
     }
 
+    public function test_threads_that_contain_spam_not_be_created(): void
+    {
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $thread = Thread::factory()->make([
+            'user_id' => null,
+            'body' => 'yahoo customer service'
+        ]);
+
+        $resourceObject = ThreadResource::make($thread)
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
+            ->response()
+            ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
+
+        $this->postJson('api/v1/threads', $resourceObject)
+            ->assertStatus(422)->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+                        'details' => 'The data.body field contains spam.',
+                        'source' => [
+                            'pointer' => '/data/body'
+                        ]
+                    ]
+                ]
+            ]);
+
+    }
+
+    public function test_user_can_only_create_thread_a_maximum_of_once_per_minute()
+    {
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $thread = Thread::factory()->make([
+            'user_id' => null,
+        ]);
+
+        $resourceObject = ThreadResource::make($thread)
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
+            ->response()
+            ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
+
+        $this->postJson('api/v1/threads', $resourceObject)
+            ->assertCreated();
+
+        $resourceObject = ThreadResource::make(Thread::factory()->make())
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
+            ->response()
+            ->getData('true');
+
+        $resourceObject['data']['channel_id'] = $thread->channel_id;
+
+        $this->postJson('api/v1/threads', $resourceObject)
+            ->assertStatus(429);
+
+    }
+
+
     public function test_it_validates_that_the_title_is_required_when_creating_a_thread(): void
     {
 

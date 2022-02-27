@@ -91,5 +91,19 @@ class ThreadTest extends TestCase
 
     }
 
+    public function test_it_knows_if_thread_just_published()
+    {
+
+        $thread = Thread::factory()->create();
+
+        $this->assertTrue($thread->wasJustPublished());
+
+        $thread = Thread::factory()->create([
+            'created_at' => now()->subMinute(),
+        ]);
+
+        $this->assertFalse($thread->wasJustPublished());
+    }
+
 
 }

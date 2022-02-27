@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Thread;
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ThreadStoreRequest extends FormRequest
@@ -14,7 +18,12 @@ class ThreadStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create', new Thread());
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new ThrottleRequestsException();
     }
 
     /**
@@ -25,8 +34,8 @@ class ThreadStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'data.title' => ['required', 'string'],
-            'data.body' => ['required', 'string'],
+            'data.title' => ['required', 'string', new SpamFree],
+            'data.body' => ['required', 'string', new SpamFree],
             'data.slug' => ['required', Rule::unique('threads', 'slug')],
             'data.channel_id' => ['required', Rule::exists('channels', 'id')]
         ];

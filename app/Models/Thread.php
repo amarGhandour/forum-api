@@ -85,4 +85,9 @@ class Thread extends Model
         return $this->updated_at > cache($key);
     }
 
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(now()->subMinute());
+    }
+
 }

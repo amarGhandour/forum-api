@@ -50,6 +50,59 @@ class CreateRepliesTest extends TestCase
 
     }
 
+    public function test_replies_that_contain_spam_not_be_created(): void
+    {
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->make([
+            'thread_id' => $thread->id,
+            'user_id' => $user->id,
+            'body' => 'Yahoo Customer Service'
+        ]);
+
+        $resourceObject = ReplyResource::make($reply)->hide(['id', 'owner'])->response()->getData(true);
+
+        $this->postJson(route('replies.store', $thread), $resourceObject)
+            ->assertStatus(422)->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+                        'details' => 'The data.body field contains spam.',
+                        'source' => [
+                            'pointer' => '/data/body',
+                        ]
+                    ]
+                ]
+            ]);
+
+        $this->assertDatabaseMissing('replies', $reply->only(['body']));
+
+    }
+
+    public function test_user_can_only_reply_a_maximum_of_once_per_minute()
+    {
+
+        Sanctum::actingAs(User::factory()->create());
+
+        $thread = Thread::factory()->create();
+
+        $this->postJson(route('replies.store', $thread), [
+            'data' => [
+                'body' => 'this is reply',
+            ]
+        ])->assertCreated();
+
+        $this->postJson(route('replies.store', $thread), [
+            'data' => [
+                'body' => 'this is reply',
+            ]
+        ])->assertStatus(429);
+
+    }
+
     public function test_it_validated_that_the_body_field_is_given_when_creating_a_reply()
     {
 

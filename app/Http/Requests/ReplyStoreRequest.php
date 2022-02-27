@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Reply;
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\Gate;
 
 class ReplyStoreRequest extends FormRequest
 {
@@ -13,7 +17,12 @@ class ReplyStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create', new Reply());
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new ThrottleRequestsException();
     }
 
     /**
@@ -24,7 +33,7 @@ class ReplyStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'data.body' => ['required', 'string']
+            'data.body' => ['required', 'string', new SpamFree]
         ];
     }
 }

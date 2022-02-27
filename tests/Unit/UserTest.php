@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -37,5 +39,38 @@ class UserTest extends TestCase
         $this->assertCount(1, $user->activity);
 
     }
+
+    public function test_user_can_fetch_most_recent_reply()
+    {
+
+        $reply = Reply::factory()->create([
+            'user_id' => $user = User::factory()->create(),
+            'created_at' => Carbon::now()->addMinute(),
+        ]);
+
+        Reply::factory()->create([
+            'user_id' => $user,
+        ]);
+
+        $this->assertEquals($reply->created_at, $user->lastReply->created_at);
+
+    }
+
+    public function test_user_can_fetch_most_recent_thread()
+    {
+
+        $thread = Thread::factory()->create([
+            'user_id' => $user = User::factory()->create(),
+            'created_at' => Carbon::now()->addMinute(),
+        ]);
+
+        Thread::factory()->create([
+            'user_id' => $user,
+        ]);
+
+        $this->assertEquals($thread->created_at, $user->lastThread->created_at);
+
+    }
+
 
 }

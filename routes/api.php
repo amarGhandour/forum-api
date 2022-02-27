@@ -4,7 +4,6 @@ use App\Http\Controllers\LikesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadController;
-use App\Http\Controllers\ThreadNotificationsController;
 use App\Http\Controllers\ThreadSubscriptionController;
 use App\Http\Controllers\UserNotificationsController;
 use Illuminate\Support\Facades\Route;

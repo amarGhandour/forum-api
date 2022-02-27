@@ -58,6 +58,11 @@ class Reply extends Model
         return !!$this->likes->where('user_id', auth()->id())->count();
     }
 
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(now()->subMinute());
+    }
+
     protected static function boot()
     {
         parent::boot();

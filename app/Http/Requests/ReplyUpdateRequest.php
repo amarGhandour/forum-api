@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReplyUpdateRequest extends FormRequest
@@ -25,7 +26,7 @@ class ReplyUpdateRequest extends FormRequest
     {
         return [
             'data.id' => ['required'],
-            'data.body' => ['required', 'string']
+            'data.body' => ['required', 'string', new SpamFree]
         ];
     }
 }

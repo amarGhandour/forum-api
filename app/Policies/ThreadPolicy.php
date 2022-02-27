@@ -41,7 +41,7 @@ class ThreadPolicy
      */
     public function create(User $user)
     {
-        //
+        return !$user->fresh()->lastThread || !$user->fresh()->lastThread->wasJustPublished();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,8 +26,8 @@ class ThreadUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'data.title' => ['required', 'string'],
-            'data.body' => ['required', 'string'],
+            'data.title' => ['required', 'string', new SpamFree],
+            'data.body' => ['required', 'string', new SpamFree],
             'data.slug' => ['required', Rule::unique('threads', 'slug')
                 ->ignore($this->route('thread'))],
             'data.channel_id' => ['required', Rule::exists('channels', 'id')]

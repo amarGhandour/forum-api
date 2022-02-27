@@ -82,4 +82,18 @@ class ReplyTest extends TestCase
         $this->assertCount(0, $reply->likes);
 
     }
+
+    public function test_it_knows_if_reply_just_published()
+    {
+
+        $reply = Reply::factory()->create();
+
+        $this->assertTrue($reply->wasJustPublished());
+
+        $reply = Reply::factory()->create([
+            'created_at' => now()->subMinute(),
+        ]);
+
+        $this->assertFalse($reply->wasJustPublished());
+    }
 }

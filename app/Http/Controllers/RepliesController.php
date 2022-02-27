@@ -21,7 +21,6 @@ class RepliesController extends Controller
 
     public function store(ReplyStoreRequest $request, Thread $thread)
     {
-
         $reply = $thread->addReply($request->validated()['data'] +
             ['user_id' => auth()->id()])->load('owner');
 

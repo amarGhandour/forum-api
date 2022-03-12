@@ -26,7 +26,7 @@ class ReplyUpdateRequest extends FormRequest
     {
         return [
             'data.id' => ['required'],
-            'data.body' => ['required', 'string', new SpamFree]
+            'data.body' => ['required', new SpamFree]
         ];
     }
 }

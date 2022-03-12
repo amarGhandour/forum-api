@@ -137,40 +137,5 @@ class CreateRepliesTest extends TestCase
 
     }
 
-    public function test_it_validated_that_the_body_field_is_string_when_creating_a_reply()
-    {
-
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
-
-        $thread = Thread::factory()->create();
-        $reply = Reply::factory()->make([
-            'thread_id' => $thread->id,
-            'user_id' => $user->id,
-            'body' => 678,
-        ]);
-
-        $resourceObject = ReplyResource::make($reply)
-            ->hide(['data.id'])
-            ->response()
-            ->getData(true);
-
-        $this->postJson(route('replies.store', $thread), $resourceObject)
-            ->assertStatus(422)->assertJson([
-                'errors' => [
-                    [
-                        'title' => 'Validation Error',
-                        'details' => 'The data.body must be a string.',
-                        'source' => [
-                            'pointer' => '/data/body',
-                        ]
-                    ]
-                ]
-            ]);;
-
-        $this->assertDatabaseMissing('replies', $reply->only(['body']));
-
-    }
-
 
 }

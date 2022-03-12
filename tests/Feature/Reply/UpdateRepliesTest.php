@@ -165,41 +165,4 @@ class UpdateRepliesTest extends TestCase
 
     }
 
-    public function test_it_validated_that_the_body_field_is_string_when_updating_a_reply()
-    {
-
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
-
-        $thread = Thread::factory()->create();
-
-        $reply = Reply::factory()->create([
-            'thread_id' => $thread->id,
-            'user_id' => $user->id,
-        ]);
-
-        $this->patchJson(route('replies.update', $reply), [
-            'data' => [
-                'id' => $reply->id,
-                'body' => 347837483,
-            ]
-        ])
-            ->assertStatus(422)->assertJson([
-                'errors' => [
-                    [
-                        'title' => 'Validation Error',
-                        'details' => 'The data.body must be a string.',
-                        'source' => [
-                            'pointer' => '/data/body',
-                        ]
-                    ]
-                ]
-            ]);;
-
-        $this->assertDatabaseMissing('replies', [
-            'body' => 347837483,
-        ]);
-
-    }
-
 }

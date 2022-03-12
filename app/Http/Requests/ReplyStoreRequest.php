@@ -33,7 +33,7 @@ class ReplyStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'data.body' => ['required', 'string', new SpamFree]
+            'data.body' => ['required', new SpamFree]
         ];
     }
 }

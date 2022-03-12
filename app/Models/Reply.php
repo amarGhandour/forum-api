@@ -80,4 +80,11 @@ class Reply extends Model
         });
     }
 
+    public function mentionedUsers(){
+
+      preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+
+      return $matches[1];
+    }
+
 }

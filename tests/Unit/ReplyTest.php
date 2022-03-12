@@ -96,4 +96,11 @@ class ReplyTest extends TestCase
 
         $this->assertFalse($reply->wasJustPublished());
     }
+
+    public function test_it_can_detect_all_mentioned_users_in_body(){
+
+        $reply = Reply::factory()->create(['body' => '@JohnDoe look at this. also @JaneDoe.']);
+
+        $this->assertEquals(['JohnDoe', 'JaneDoe'], $reply->mentionedUsers());
+    }
 }

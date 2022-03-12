@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ThreadReceivedNewReply;
 use App\Filters\ThreadFilter;
 use App\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,8 @@ class Thread extends Model
     public function addReply(array $attributes)
     {
         $reply = $this->replies()->create($attributes);
+
+        event(new ThreadReceivedNewReply($reply));
 
         $this->notifySubscribers($reply);
 

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class NotificationsTest extends TestCase
+class SubscriberUsersNotificationsTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 

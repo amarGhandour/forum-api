@@ -33,8 +33,6 @@ class Thread extends Model
 
         event(new ThreadReceivedNewReply($reply));
 
-        $this->notifySubscribers($reply);
-
         return $reply;
     }
 
@@ -73,11 +71,6 @@ class Thread extends Model
     public function scopeFilter($query, ThreadFilter $filters)
     {
         return $filters->apply($query);
-    }
-
-    public function notifySubscribers($reply): void
-    {
-        $this->subscriptions->where('user_id', '!=', $reply->user_id)->each->notify($reply);
     }
 
     public function hasUpdatesFor(User $user)

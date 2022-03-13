@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar_path',
     ];
 
     /**
@@ -41,6 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAvatarPathAttribute($key)
+    {
+
+        return asset($this->attributes['avatar_path'] ?? 'avatars/default.jpg');
+    }
 
     public function threads()
     {

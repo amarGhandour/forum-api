@@ -7,11 +7,12 @@ use App\Models\Thread;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     public function test_it_created_by_a_user()
     {
@@ -72,5 +73,13 @@ class UserTest extends TestCase
 
     }
 
+    public function test_it_returns_full_avatar_path()
+    {
 
+        $user = User::factory()->create();
+        $this->assertEquals(asset('avatars/default.jpg'), $user->avatar_path);
+
+        $user->avatar_path = 'avatars/me.jpg';
+        $this->assertEquals(asset('avatars/me.jpg'), $user->avatar_path);
+    }
 }

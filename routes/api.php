@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvatarUserController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
@@ -58,6 +59,10 @@ Route::prefix('v1')->group(function () {
             ->name('thread-notifications.destroy');
         Route::get('profiles/{user:name}/notifications', [UserNotificationsController::class, 'index'])
             ->name('thread-notifications.index');
+
+        //users
+        Route::post('users/{user}/avatar', [AvatarUserController::class, 'update']);
+
     });
 
 });

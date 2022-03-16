@@ -32,8 +32,9 @@ class CreateThreadTest extends TestCase
         ]);
 
         $resourceObject = ThreadResource::make($thread)
-            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])->response()->getData(true);
-
+            ->hide(['data.id', 'data.author', 'data.channel', 'data.replies_count'])
+            ->response()
+            ->getData(true);
 
         $resourceObject['data']['channel_id'] = $thread->channel_id;
 
@@ -50,7 +51,7 @@ class CreateThreadTest extends TestCase
 
         $resourceObject = ThreadResource::make($threadCreated);
 
-        $response->assertResource($resourceObject->hide(['data.replies', 'data.replies_count']));
+        $response->assertResource($resourceObject->hide(['data.replies', 'data.replies_count', 'data.visits']));
 
     }
 

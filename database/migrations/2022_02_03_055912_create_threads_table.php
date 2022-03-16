@@ -18,6 +18,7 @@ class CreateThreadsTable extends Migration
             $table->string('title')->index();
             $table->string('slug')->unique();
             $table->text('body');
+            $table->unsignedBigInteger('visits')->default(0);
             $table->unsignedBigInteger('replies_count')->default(0);
             $table->timestamps();
             $table->foreignId('user_id');

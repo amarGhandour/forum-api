@@ -41,17 +41,16 @@ class ReadThreadsTest extends TestCase
             'thread_id' => $thread->id,
         ]);
 
-        $thread = Thread::where('id', $thread->id)->first();
-
-        $resource = ThreadResource::make($thread);
-
         $this->assertTrue($thread->hasUpdatesFor($user));
 
-        $this->getJson(route('threads.show', [$thread->channel, $thread]))
-            ->assertOk()->assertResource($resource);
+        $response = $this->getJson(route('threads.show', [$thread->channel, $thread]))->assertOk();
+
+        $thread = Thread::where('id', $thread->id)->first();
+        $resource = ThreadResource::make($thread);
+
+        $response->assertResource($resource);
 
         $this->assertFalse($thread->hasUpdatesFor($user));
-
 
     }
 
@@ -131,5 +130,16 @@ class ReadThreadsTest extends TestCase
 
     }
 
+    public function test_it_record_new_visit_each_time_the_thread_is_read()
+    {
+        $thread = Thread::factory()->create();
+
+        $this->assertSame(0, $thread->visits);
+
+        $this->getJson(route('threads.show', [$thread->channel, $thread]));
+
+        $this->assertEquals(1, $thread->fresh()->visits);
+
+    }
 
 }

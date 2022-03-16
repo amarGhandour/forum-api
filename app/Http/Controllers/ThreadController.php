@@ -28,6 +28,8 @@ class ThreadController extends Controller
             auth()->user()->read($thread);
         }
 
+        $thread->increment('visits');
+
         return response()->json(new ThreadResource($thread));
     }
 

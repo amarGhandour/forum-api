@@ -50,6 +50,14 @@ class ThreadTest extends TestCase
 
     }
 
+    public function test_it_has_path()
+    {
+
+        $thread = Thread::factory()->create();
+
+        $this->assertEquals(asset("api/v1/threads/{$thread->channel->slug}/$thread->slug"), $thread->path());
+    }
+
     public function test_a_thread_can_add_a_reply_to()
     {
 

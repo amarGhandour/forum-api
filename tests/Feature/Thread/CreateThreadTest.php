@@ -299,11 +299,11 @@ class CreateThreadTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $threadInDatabase = Thread::factory()->create();
+        Thread::factory(['slug' => 'foo title'])->create();
 
         $thread = Thread::factory()->make([
             'user_id' => null,
-            'slug' => $threadInDatabase->slug,
+            'slug' => 'foo-title',
         ]);
 
         $resourceObject = ThreadResource::make($thread)
@@ -312,8 +312,9 @@ class CreateThreadTest extends TestCase
             ->getData('true');
 
         $resourceObject['data']['channel_id'] = $thread->channel_id;
+        $resourceObject['data']['slug'] = 'foo-title';
 
-        $this->postJson('api/v1/threads', $resourceObject)
+        $this->postJson(route('threads.store'), $resourceObject)
             ->assertStatus(422)->assertJson([
                 'errors' => [
                     [
@@ -327,6 +328,26 @@ class CreateThreadTest extends TestCase
             ]);
 
         $this->assertDatabaseMissing('threads', $resourceObject['data']);
+
+    }
+
+    public function test_a_thread_must_have_a_unique_slug()
+    {
+
+        $thread = Thread::factory()->create(['title' => 'Foo Title', 'slug' => 'foo title']);
+
+        Sanctum::actingAs($user = User::factory()->create());
+
+        $this->postJson(route('threads.store'), [
+            'data' => [
+                'title' => $thread->title,
+                'slug' => 'foo title',
+                'body' => $thread->body,
+                'channel_id' => $thread->channel->id,
+            ]
+        ])->assertCreated();
+
+        $this->assertTrue(Thread::whereSlug('foo-title-2')->exists());
 
     }
 

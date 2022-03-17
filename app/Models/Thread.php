@@ -7,6 +7,7 @@ use App\Filters\ThreadFilter;
 use App\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Thread extends Model
 {
@@ -25,6 +26,16 @@ class Thread extends Model
                 $reply->delete();
             });
         });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function path()
+    {
+        return route('threads.show', [$this->channel, $this]);
     }
 
     public function addReply(array $attributes)
@@ -84,6 +95,31 @@ class Thread extends Model
     public function wasJustPublished()
     {
         return $this->created_at->gt(now()->subMinute());
+    }
+
+    public function setSlugAttribute($value)
+    {
+        $slug = Str::slug($value);
+
+        if (static::where('slug', $slug)->exists()) {
+            $slug = $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    protected function incrementSlug($slug)
+    {
+
+        $max = static::whereTitle($this->title)->latest('id')->value('slug');
+
+        if (isset($max) && is_numeric($max[-1])) {
+            return preg_replace_callback('/(\d+)$/', function ($matches) {
+                return $matches[1] + 1;
+            }, $max);
+        }
+
+        return "$slug-2";
     }
 
 }

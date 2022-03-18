@@ -17,7 +17,7 @@ class ThreadFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'slug' => $this->faker->unique()->slug(),
+//            'slug' => $this->faker->unique()->slug(),
             'body' => $this->faker->paragraph(),
             'visits' => 0,
             'user_id' => User::factory(),

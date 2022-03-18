@@ -26,6 +26,11 @@ class Thread extends Model
                 $reply->delete();
             });
         });
+
+        static::created(function ($thread) {
+            $thread->update(['slug' => $thread->title]);
+        });
+
     }
 
     public function getRouteKeyName()
@@ -102,24 +107,15 @@ class Thread extends Model
         $slug = Str::slug($value);
 
         if (static::where('slug', $slug)->exists()) {
-            $slug = $this->incrementSlug($slug);
+            $slug = "$slug-$this->id";
         }
 
         $this->attributes['slug'] = $slug;
     }
 
-    protected function incrementSlug($slug)
+    public function markBestReply(Reply $reply)
     {
-
-        $max = static::whereTitle($this->title)->latest('id')->value('slug');
-
-        if (isset($max) && is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($matches) {
-                return $matches[1] + 1;
-            }, $max);
-        }
-
-        return "$slug-2";
+        $this->update(['best_reply_id' => $reply->id]);
     }
 
 }

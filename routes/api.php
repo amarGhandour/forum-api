@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AvatarUserController;
+use App\Http\Controllers\BestReplyController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
@@ -46,6 +47,9 @@ Route::prefix('v1')->group(function () {
         Route::post('threads/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
         Route::patch('replies/{reply}', [RepliesController::class, 'update'])->name('replies.update');
         Route::delete('replies/{reply}', [RepliesController::class, 'destroy'])->name('replies.destroy');
+
+        //best reply
+        Route::post('replies/{reply}/best', [BestReplyController::class, 'store'])->name('best-replies.store');
 
         // likes
         Route::post('replies/{reply}/likes', [LikesController::class, 'store'])->name('replies.likes');

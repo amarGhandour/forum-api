@@ -230,38 +230,4 @@ class UpdateThreadTest extends TestCase
 
     }
 
-    public function test_it_validates_that_the_slug_is_required_when_updating_a_thread(): void
-    {
-
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
-
-        $thread = Thread::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $resourceObject = ThreadResource::make(Thread::factory()->make())
-            ->hide(['data.id', 'data.author', 'data.slug', 'data.channel', 'data.replies_count'])
-            ->response()
-            ->getData('true');
-
-        $resourceObject['data']['channel_id'] = $thread->channel_id;
-
-        $this->patchJson(route('threads.update', $thread), $resourceObject)
-            ->assertStatus(422)->assertJson([
-                'errors' => [
-                    [
-                        'title' => 'Validation Error',
-                        'details' => 'The data.slug field is required.',
-                        'source' => [
-                            'pointer' => '/data/slug'
-                        ]
-                    ]
-                ]
-            ]);
-
-        $this->assertDatabaseMissing('threads', $resourceObject['data']);
-
-    }
-
 }

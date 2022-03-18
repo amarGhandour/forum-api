@@ -21,6 +21,10 @@ class RepliesController extends Controller
 
     public function store(ReplyStoreRequest $request, Thread $thread)
     {
+        if ($thread->locked) {
+            return response('This thread is locked from new replies', Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $reply = $thread->addReply($request->validated()['data'] +
             ['user_id' => auth()->id()])->load('owner');
 

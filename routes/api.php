@@ -3,6 +3,7 @@
 use App\Http\Controllers\AvatarUserController;
 use App\Http\Controllers\BestReplyController;
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\LockedThreadsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadController;
@@ -42,6 +43,12 @@ Route::prefix('v1')->group(function () {
             ->name('threads.subscriptions.store');
         Route::delete('threads/{channel:slug}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'destroy'])
             ->name('threads.subscriptions.destroy');
+
+        // locked threads
+        Route::group(['middleware' => 'admin'], function () {
+            Route::post('locked-threads/{thread}', [LockedThreadsController::class, 'store'])->name('locked-threads.store');
+            Route::delete('locked-threads/{thread}', [LockedThreadsController::class, 'destroy'])->name('locked-threads.destroy');
+        });
 
         // reply
         Route::post('threads/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');

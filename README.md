@@ -1,8 +1,7 @@
 # Forum Api
-***
 
 ## Technologies:
-***
+
 - Laravel - version 8
 - Mysql
 - Redis - is for remembering the view count and trending threads.

@@ -1,11 +1,8 @@
 # Forum Api
-
 ***
 
 ## Technologies:
-
 ***
-
 - Laravel - version 8
 - Mysql
 - Redis - is for remembering the view count and trending threads.
@@ -13,7 +10,6 @@
 - Recaptcha - is for spam protection.
 
 ## Features:
-
 - [x] User can view all threads
 - [x] User can view single thread
 - [x] User can create threads

@@ -1,66 +1,50 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Forum Api
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+____
 
-## About Laravel
+## Technologies:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+_____
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<img src="https://cdn.iconscout.com/icon/free/png-256/php-71-458168.png" width="50" height="50">
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<img src="https://www.designbust.com/download/168/png/laravel_icon512.png" width="50" height="50">
 
-## Learning Laravel
+<img src="https://w7.pngwing.com/pngs/114/566/png-transparent-mysql-database-web-development-computer-icons-mysql-white-mammal-text.png" width="50" height="50">
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<img src="https://blog.postman.com/wp-content/uploads/2014/07/logo.png" width="110" height="60">
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+___
 
-## Laravel Sponsors
+## Features:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- [x] User can view all threads
+- [x] User can view single thread
+- [x] User can create threads
+- [x] User can reply to threads
+- [x] User can update/delete his reply.
+- [x] User can filter threads based on channel
+- [x] User can view his/her own threads
+- [x] User can filter threads based on popularity
+- [x] User can favorite a reply
+- [x] User can view his/her profile
+- [x] User can view his/her activity feed
+- [x] User can filter threads by unanswered
+- [ ] User can use pagination in threads
+- [ ] User can use pagination in replies
+- [x] User can subscribe to a thread
+- [x] User can receive notifications about subscribed thread
+- [x] Adding invalid keywords feature and spam detection
+- [x] User can mention another person using '@' when creating a reply
+- [x] User can change their avatar
+- [ ] User must confirm their email address before creating a thread
+- [x] Administrator may lock or unlock a thread
+- [ ] User must verify recaptcha
+- [x] User can update a thread
+- [x] User can delete a thread
+- [ ] User can search for threads
+- [ ] User can view trending threads
+- [ ] A thread auto locked itself when it has 2k replies
+- [x] User can post code in post / reply
+- [ ] Administrator can create channels
+- [ ] User can post pictures in post / reply

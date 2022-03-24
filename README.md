@@ -39,3 +39,4 @@
 - [x] User can post code in post / reply
 - [ ] Administrator can create channels
 - [ ] User can post pictures in post / reply
+- [ ] Make authentication and authorization for api.
